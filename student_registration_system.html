@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b3e;
+    --blue: #1a4db5;
+    --sky: #2d7dd2;
+    --accent: #00c9ff;
+    --light: #e8f2ff;
+    --white: #ffffff;
+    --gray: #6b7a99;
+    --danger: #e84545;
+    --success: #27ae60;
+    --card: #f4f8ff;
+    --border: #d0e0f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: linear-gradient(135deg, #0d1b3e 0%, #1a3a6b 50%, #0a2855 100%);
+    min-height: 100vh;
+    color: var(--navy);
+  }
+
+  /* Animated bg */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,201,255,0.08) 0%, transparent 70%);
+    animation: pulse 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  .app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: slideDown 0.5s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo {
+    height: 56px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .header-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .header-stats {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
+  }
+
+  .stat-badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 8px 16px;
+    text-align: center;
+  }
+
+  .stat-badge .num {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-badge .lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  /* Nav Tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    animation: slideDown 0.5s ease 0.1s both;
+  }
+
+  .tab-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 16px rgba(29,97,211,0.4);
+  }
+
+  /* Panel */
+  .panel {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    animation: fadeUp 0.4s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .panel-header h2 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+  }
+
+  .panel-header .icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  /* Form */
+  .form-body {
+    padding: 28px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1/-1; }
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  label span.req { color: var(--danger); }
+
+  input, select {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    background: var(--card);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--sky);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(45,125,210,0.12);
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    color: white;
+    box-shadow: 0 4px 16px rgba(29,97,211,0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(29,97,211,0.45);
+  }
+
+  .btn-secondary {
+    background: var(--card);
+    color: var(--gray);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--border); }
+
+  .btn-danger {
+    background: #fff0f0;
+    color: var(--danger);
+    border: 1.5px solid #ffd0d0;
+    padding: 7px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .btn-danger:hover { background: #ffe0e0; }
+
+  .btn-edit {
+    background: #e8f2ff;
+    color: var(--blue);
+    border: 1.5px solid var(--border);
+    padding: 7px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .btn-edit:hover { background: #d0e4ff; }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1.5px solid var(--border);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 999;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Sarabun', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    animation: toastIn 0.3s ease;
+    transition: opacity 0.3s ease;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .toast.success { background: #d4f8e8; color: #1a6e3c; border: 1.5px solid #a0e4c0; }
+  .toast.error { background: #ffe0e0; color: #b02020; border: 1.5px solid #ffc0c0; }
+
+  /* Search bar */
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .search-bar input, .search-bar select {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white;
+  }
+
+  thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: #f0f6ff; }
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td {
+    padding: 13px 16px;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--gray);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  /* Confirm modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: fadeUp 0.3s ease;
+  }
+
+  .modal h3 { font-size: 18px; margin-bottom: 8px; color: var(--navy); }
+  .modal p { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Header -->
+  <div class="header">
+    <img class="logo" src="https://img2.pic.in.th/Logo-SPU-SIT_Color.png" alt="SPU SIT Logo">
+    <div class="header-text">
+      <h1>ระบบลงทะเบียนนักศึกษา</h1>
+      <p>Student Registration System</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <div class="num" id="total-count">0</div>
+        <div class="lbl">นักศึกษา</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('add')" id="tab-add">
+      ➕ บันทึกข้อมูล
+    </button>
+    <button class="tab-btn" onclick="showTab('search')" id="tab-search">
+      🔍 ค้นหานักศึกษา
+    </button>
+    <button class="tab-btn" onclick="showTab('list')" id="tab-list">
+      📋 ข้อมูลทั้งหมด
+    </button>
+  </div>
+
+  <!-- Panel: Add/Edit -->
+  <div class="panel" id="panel-add">
+    <div class="panel-header">
+      <div class="icon">📝</div>
+      <h2 id="form-title">บันทึกข้อมูลนักศึกษา</h2>
+    </div>
+    <div class="form-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>รหัสนักศึกษา <span class="req">*</span></label>
+          <input type="text" id="f-id" placeholder="เช่น 6601234567" maxlength="10">
+        </div>
+        <div class="form-group">
+          <label>ชื่อ-นามสกุล <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="ชื่อ นามสกุล">
+        </div>
+        <div class="form-group">
+          <label>คณะ <span class="req">*</span></label>
+          <select id="f-faculty">
+            <option value="">-- เลือกคณะ --</option>
+            <option>วิศวกรรมศาสตร์</option>
+            <option>วิทยาศาสตร์</option>
+            <option>บริหารธุรกิจ</option>
+            <option>นิติศาสตร์</option>
+            <option>แพทยศาสตร์</option>
+            <option>เภสัชศาสตร์</option>
+            <option>ศึกษาศาสตร์</option>
+            <option>สถาปัตยกรรมศาสตร์</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>สาขาวิชา <span class="req">*</span></label>
+          <input type="text" id="f-branch" placeholder="เช่น คอมพิวเตอร์">
+        </div>
+        <div class="form-group full">
+          <label>เบอร์โทรศัพท์</label>
+          <input type="tel" id="f-phone" placeholder="0XX-XXX-XXXX" maxlength="12">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-secondary" onclick="clearForm()">🔄 ล้างข้อมูล</button>
+        <button class="btn btn-primary" onclick="saveStudent()">💾 บันทึกข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel: Search -->
+  <div class="panel hidden" id="panel-search">
+    <div class="panel-header">
+      <div class="icon">🔍</div>
+      <h2>ค้นหานักศึกษา</h2>
+    </div>
+    <div class="form-body">
+      <div class="search-bar">
+        <input type="text" id="s-query" placeholder="รหัสนักศึกษา หรือ ชื่อ-นามสกุล" oninput="searchStudents()">
+        <select id="s-faculty" onchange="searchStudents()">
+          <option value="">ทุกคณะ</option>
+          <option>วิศวกรรมศาสตร์</option>
+          <option>วิทยาศาสตร์</option>
+          <option>บริหารธุรกิจ</option>
+          <option>นิติศาสตร์</option>
+          <option>แพทยศาสตร์</option>
+          <option>เภสัชศาสตร์</option>
+          <option>ศึกษาศาสตร์</option>
+          <option>สถาปัตยกรรมศาสตร์</option>
+        </select>
+        <select id="s-branch" onchange="searchStudents()">
+          <option value="">ทุกสาขา</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>รหัสนักศึกษา</th>
+              <th>ชื่อ-นามสกุล</th>
+              <th>คณะ</th>
+              <th>สาขา</th>
+              <th>เบอร์โทร</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="search-tbody"></tbody>
+        </table>
+        <div id="search-empty" class="empty-state hidden">
+          <div class="icon">🔍</div>
+          <p>ไม่พบข้อมูลนักศึกษา</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel: List -->
+  <div class="panel hidden" id="panel-list">
+    <div class="panel-header">
+      <div class="icon">📋</div>
+      <h2>ข้อมูลนักศึกษาทั้งหมด</h2>
+    </div>
+    <div class="form-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>รหัสนักศึกษา</th>
+              <th>ชื่อ-นามสกุล</th>
+              <th>คณะ</th>
+              <th>สาขา</th>
+              <th>เบอร์โทร</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="list-tbody"></tbody>
+        </table>
+        <div id="list-empty" class="empty-state hidden">
+          <div class="icon">🎓</div>
+          <p>ยังไม่มีข้อมูลนักศึกษา กรุณาบันทึกข้อมูลก่อน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div style="font-size:48px;margin-bottom:12px">⚠️</div>
+    <h3>ยืนยันการลบ</h3>
+    <p id="modal-msg">คุณต้องการลบข้อมูลนักศึกษานี้ใช่หรือไม่?</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn" style="background:var(--danger);color:white;" onclick="confirmDelete()">ลบข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let students = JSON.parse(localStorage.getItem('students') || '[]');
+  let editingId = null;
+  let deleteId = null;
+
+  // Use sample data if empty
+  if (students.length === 0) {
+    students = [
+      { id: '6601000001', name: 'สมชาย ใจดี', faculty: 'วิศวกรรมศาสตร์', branch: 'คอมพิวเตอร์', phone: '081-234-5678' },
+      { id: '6601000002', name: 'สุดา มีสุข', faculty: 'บริหารธุรกิจ', branch: 'การตลาด', phone: '089-765-4321' },
+    ];
+    save();
+  }
+
+  function save() {
+    localStorage.setItem('students', JSON.stringify(students));
+    updateCount();
+  }
+
+  function updateCount() {
+    document.getElementById('total-count').textContent = students.length;
+  }
+
+  function showTab(tab) {
+    ['add','search','list'].forEach(t => {
+      document.getElementById('panel-' + t).classList.add('hidden');
+      document.getElementById('tab-' + t).classList.remove('active');
+    });
+    document.getElementById('panel-' + tab).classList.remove('hidden');
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    if (tab === 'list') renderList();
+    if (tab === 'search') { renderSearch(students); buildBranchOptions(); }
+  }
+
+  function toast(msg, type='success') {
+    const el = document.getElementById('toast');
+    el.className = 'toast ' + type;
+    el.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 3000);
+  }
+
+  function clearForm() {
+    ['f-id','f-name','f-faculty','f-branch','f-phone'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    editingId = null;
+    document.getElementById('form-title').textContent = 'บันทึกข้อมูลนักศึกษา';
+  }
+
+  function saveStudent() {
+    const id = document.getElementById('f-id').value.trim();
+    const name = document.getElementById('f-name').value.trim();
+    const faculty = document.getElementById('f-faculty').value;
+    const branch = document.getElementById('f-branch').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+
+    if (!id || !name || !faculty || !branch) {
+      toast('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน', 'error');
+      return;
+    }
+
+    if (editingId) {
+      const idx = students.findIndex(s => s.id === editingId);
+      students[idx] = { id, name, faculty, branch, phone };
+      toast('แก้ไขข้อมูลนักศึกษาเรียบร้อยแล้ว');
+      editingId = null;
+      document.getElementById('form-title').textContent = 'บันทึกข้อมูลนักศึกษา';
+    } else {
+      if (students.find(s => s.id === id)) {
+        toast('รหัสนักศึกษานี้มีอยู่แล้วในระบบ', 'error');
+        return;
+      }
+      students.push({ id, name, faculty, branch, phone });
+      toast('บันทึกข้อมูลนักศึกษาเรียบร้อยแล้ว');
+    }
+
+    save();
+    clearForm();
+  }
+
+  function editStudent(id) {
+    const s = students.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('f-id').value = s.id;
+    document.getElementById('f-id').disabled = true;
+    document.getElementById('f-name').value = s.name;
+    document.getElementById('f-faculty').value = s.faculty;
+    document.getElementById('f-branch').value = s.branch;
+    document.getElementById('f-phone').value = s.phone;
+    editingId = id;
+    document.getElementById('form-title').textContent = 'แก้ไขข้อมูลนักศึกษา';
+    showTab('add');
+    setTimeout(() => document.getElementById('f-id').disabled = false, 100);
+  }
+
+  function askDelete(id) {
+    deleteId = id;
+    const s = students.find(x => x.id === id);
+    document.getElementById('modal-msg').textContent = `ต้องการลบข้อมูล "${s.name}" (${id}) ออกจากระบบ?`;
+    document.getElementById('modal-overlay').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.add('hidden');
+    deleteId = null;
+  }
+
+  function confirmDelete() {
+    students = students.filter(s => s.id !== deleteId);
+    save();
+    closeModal();
+    toast('ลบข้อมูลนักศึกษาเรียบร้อยแล้ว');
+    renderList();
+    searchStudents();
+  }
+
+  function renderRow(s, idx) {
+    const colors = ['#e8f2ff','#e8fff2','#fff8e8','#f5e8ff','#ffe8e8'];
+    const c = colors[idx % colors.length];
+    return `<tr>
+      ${idx !== undefined ? `<td><span class="badge" style="background:${c};color:var(--navy)">${idx+1}</span></td>` : ''}
+      <td><strong>${s.id}</strong></td>
+      <td>${s.name}</td>
+      <td>${s.faculty}</td>
+      <td>${s.branch}</td>
+      <td>${s.phone || '-'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-edit" onclick="editStudent('${s.id}')">✏️ แก้ไข</button>
+        <button class="btn btn-danger" onclick="askDelete('${s.id}')">🗑️ ลบ</button>
+      </td>
+    </tr>`;
+  }
+
+  function renderList() {
+    const tbody = document.getElementById('list-tbody');
+    const empty = document.getElementById('list-empty');
+    if (students.length === 0) {
+      tbody.innerHTML = '';
+      empty.classList.remove('hidden');
+    } else {
+      empty.classList.add('hidden');
+      tbody.innerHTML = students.map((s,i) => renderRow(s,i)).join('');
+    }
+  }
+
+  function searchStudents() {
+    const q = document.getElementById('s-query').value.toLowerCase();
+    const fac = document.getElementById('s-faculty').value;
+    const br = document.getElementById('s-branch').value;
+
+    const filtered = students.filter(s => {
+      const matchQ = !q || s.id.includes(q) || s.name.toLowerCase().includes(q);
+      const matchF = !fac || s.faculty === fac;
+      const matchB = !br || s.branch === br;
+      return matchQ && matchF && matchB;
+    });
+
+    const tbody = document.getElementById('search-tbody');
+    const empty = document.getElementById('search-empty');
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.classList.remove('hidden');
+    } else {
+      empty.classList.add('hidden');
+      tbody.innerHTML = filtered.map((s,i) => renderRow(s, undefined)).join('');
+    }
+  }
+
+  function buildBranchOptions() {
+    const branches = [...new Set(students.map(s => s.branch))].sort();
+    const sel = document.getElementById('s-branch');
+    const val = sel.value;
+    sel.innerHTML = '<option value="">ทุกสาขา</option>' +
+      branches.map(b => `<option${b===val?' selected':''}>${b}</option>`).join('');
+  }
+
+  // Init
+  updateCount();
+</script>
+</body>
+</html>
